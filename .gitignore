@@ -1,2 +1,4 @@
 *.excalidraw
 .DS_Store
+test/
+.gitpot/

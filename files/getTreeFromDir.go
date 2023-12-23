@@ -28,7 +28,29 @@ func GetTreeFromDir(dirPath string) *Tree {
 			}
 			children = append(children, GetTreeFromDir(dirPath + "/" + entry.Name()))
 		} else {
-			children = append(children, &Tree{name: entry.Name(), isDir: false})
+
+      // open file
+      file, err := os.Open(dirPath + "/" + entry.Name())
+      if err != nil {
+        panic(err)
+      }
+      defer file.Close()
+
+      // get the file size
+      stat, err := file.Stat()
+      if err != nil {
+        panic(err)
+      }
+
+      // read the file
+      fileSize := stat.Size()
+      bytes := make([]byte, fileSize)
+      _, err = file.Read(bytes)
+      if err != nil {
+        panic(err)
+      }
+
+      children = append(children, &Tree{name: entry.Name(), isDir: false, value: bytes})
 		}
 	}
 	tree.children = children
