@@ -52,6 +52,7 @@ func GetTreeFromHash(path string, hash string, treeName string) *Tree {
 			fileSize := stat.Size()
 			content := make([]byte, fileSize)
 			_, err = file.Read(content)
+			content = content[5:]
 			if err != nil {
 				panic(err)
 			}

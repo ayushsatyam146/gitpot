@@ -15,7 +15,8 @@ func main() {
 	fmt.Println(hash)
 	tree2 := file.GetTreeFromHash("test/.gitpot", hash, "")
 	file.PrintTree(tree2)
-
+	file.WriteTreeToDisk(tree2, "test-write")
+	
 	// res, _ := files.ListFilesRecursive(".")
 	// for _, file := range res {
 	// 	fmt.Println(file)
