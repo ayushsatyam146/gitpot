@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 )
 
-func inRepo() bool{
+func inRepo() bool {
 	res := GitPotPath("")
 	if res != "" {
 		return true

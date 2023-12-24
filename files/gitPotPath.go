@@ -32,7 +32,6 @@ func GitPotPath(path string) string {
 	return GitPotDir(currentDir) + "/" + path
 }
 
-
 func WorkingCopyPath(path string) string {
 	return GitPotPath("") + "../" + path
 }

@@ -21,8 +21,7 @@ func isDirEmpty(path string) (bool, error) {
 	return true, nil
 }
 
-
-//  recursively removes all the empty directories inside path
+// recursively removes all the empty directories inside path
 func RemoveEmptyDirs(rootPath string) error {
 	return filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {

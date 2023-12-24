@@ -14,22 +14,22 @@ func printTreeHandler(tree *Tree, level int) {
 
 		temp := ""
 		for i := 0; i < level; i++ {
-			temp+="│    "
+			temp += "│    "
 		}
 		fmt.Print(temp)
-		
-		if (i == len(tree.children) - 1) {
+
+		if i == len(tree.children)-1 {
 			fmt.Print("└───")
 		} else {
 			fmt.Print("├───")
 		}
-		if(child.isDir) {
+		if child.isDir {
 			dirName := child.name
 			dirName = dirName[2:]
 			elements := strings.Split(dirName, "/")
 			lastElement := elements[len(elements)-1]
 			fmt.Println(lastElement)
-			printTreeHandler( child, level+1)
+			printTreeHandler(child, level+1)
 		} else {
 			fmt.Println(child.name)
 		}
