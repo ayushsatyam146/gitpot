@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	// utils "github.com/ayushsatyam146/gitpot/utils"
 	"github.com/spf13/cobra"
 )
 

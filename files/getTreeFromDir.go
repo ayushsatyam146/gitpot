@@ -3,11 +3,16 @@ package files
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Give dir path and get tree of the directory
 func GetTreeFromDir(dirPath string) *Tree {
-	tree := Tree{name: dirPath, isDir: true}
+
+	elements := strings.Split(dirPath, "/")
+	lastElement := elements[len(elements)-1]
+
+	tree := Tree{name: lastElement, isDir: true}
 	children := []*Tree{}
 
 	dir, err := os.Open(dirPath)

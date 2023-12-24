@@ -2,7 +2,6 @@ package files
 
 import (
 	"fmt"
-	"strings"
 )
 
 func PrintTree(tree *Tree) {
@@ -24,11 +23,7 @@ func printTreeHandler(tree *Tree, level int) {
 			fmt.Print("├───")
 		}
 		if child.isDir {
-			dirName := child.name
-			dirName = dirName[2:]
-			elements := strings.Split(dirName, "/")
-			lastElement := elements[len(elements)-1]
-			fmt.Println(lastElement)
+			fmt.Println(child.name)
 			printTreeHandler(child, level+1)
 		} else {
 			fmt.Println(child.name)

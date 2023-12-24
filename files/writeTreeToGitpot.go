@@ -1,10 +1,12 @@
 package files
 
 import (
+	"strings"
+
 	utils "github.com/ayushsatyam146/gitpot/utils"
 )
 
-func WriteToGitpotFromTree(tree *Tree, path string) string {
+func WriteTreeToGitpot(tree *Tree, path string) string {
 
 	TreeFileContent := "tree\n"
 	for _, child := range tree.children {
@@ -13,8 +15,11 @@ func WriteToGitpotFromTree(tree *Tree, path string) string {
 			hash, _ := utils.GetSHA1(child.value)
 			TreeFileContent += "blob " + hash + " " + child.name + "\n"
 		} else {
-			hash := WriteToGitpotFromTree(child, path)
-			TreeFileContent += "tree " + hash + " " + child.name + "\n"
+			hash := WriteTreeToGitpot(child, path)
+			elements := strings.Split(child.name, "/")
+			lastElement := elements[len(elements)-1]
+			// fmt.Println(lastElement)
+			TreeFileContent += "tree " + hash + " " + lastElement + "\n"
 		}
 	}
 

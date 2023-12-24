@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	// "github.com/ayushsatyam146/gitpot/cmd"
 	file "github.com/ayushsatyam146/gitpot/files"
 )
 
@@ -10,8 +11,11 @@ func main() {
 	// cmd.Execute()
 	tree := file.GetTreeFromDir("test")
 	file.PrintTree(tree)
-	hash := file.WriteToGitpotFromTree(tree, "test/.gitpot")
+	hash := file.WriteTreeToGitpot(tree, "test/.gitpot")
 	fmt.Println(hash)
+	tree2 := file.GetTreeFromHash("test/.gitpot", hash, "")
+	file.PrintTree(tree2)
+
 	// res, _ := files.ListFilesRecursive(".")
 	// for _, file := range res {
 	// 	fmt.Println(file)
