@@ -6,8 +6,6 @@ import (
 
 func WriteToGitpotFromTree(tree *Tree, path string) string {
 
-  // put a check to see if path exists
-
   TreeFileContent := "tree\n"
   for _, child := range tree.children {
     if(!child.isDir) {
@@ -23,4 +21,5 @@ func WriteToGitpotFromTree(tree *Tree, path string) string {
   utils.WriteToObjectsDir(path, []byte(TreeFileContent), true)
   hash, _ := utils.GetSHA1([]byte(TreeFileContent))
   return hash
+  
 }
