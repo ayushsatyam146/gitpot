@@ -1,22 +1,33 @@
 package files
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 )
 
 // ReadFileToString reads the contents of the file at the specified path and returns it as a string
-func Read(filePath string) (string, error) {
-	content, err := os.ReadFile(filePath)
+func ReadFile(filePath string) ([]byte) {
+	file, err := os.Open(filePath)
 	if err != nil {
-		if os.IsNotExist(err) {
-			return "", fmt.Errorf("file not found: %s", filePath)
-		}
-		return "", err
+		panic(err)
+	}
+	defer file.Close()
+
+	// get the file size
+	stat, err := file.Stat()
+	if err != nil {
+		panic(err)
 	}
 
-	return string(content), nil
+	// read the file
+	fileSize := stat.Size()
+	bytes := make([]byte, fileSize)
+	_, err = file.Read(bytes)
+	if err != nil {
+		panic(err)
+	}
+
+	return bytes
 }
 
 func ListFilesRecursive(path string) ([]string, error) {

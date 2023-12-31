@@ -3,11 +3,86 @@ package files
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
+// make it get tree from file or dir path
 // Give dir path and get tree of the directory
-func GetTreeFromDir(dirPath string) *Tree {
+// make it construct tree of nested tree structures as well like docs/something/else/a.txt
+// make it smart enough to construct unified tree if we have docs/something/else/a.txt and docs/something/else/b.txt
+
+func GetRelTreeFromWorkingDir(path string) *Tree{
+
+	fmt.Println(filepath.Abs(path))
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			panic("File or directory does not exist")
+		} 
+	}
+
+	// Check if it's a file
+	if fileInfo.Mode().IsRegular() {
+		// if a file
+		
+		elements := strings.Split(path, "/")
+		fileName := elements[len(elements)-1]
+		elements = elements[:len(elements)-1]
+		auxillary_path := strings.Join(elements, "/")
+		auxillary_path = PathFromRepoRoot(auxillary_path)
+		elements = strings.Split(auxillary_path, "/")
+
+		abs_path,_ := filepath.Abs(path)
+		bytes := ReadFile(abs_path)
+		
+		node := &Tree{name: fileName, isDir: false, value: bytes}
+
+		current_node := &Tree{}
+		tree := current_node
+		for _,entry := range elements {
+			if entry == ".git" || entry == ".gitpot" {
+				continue
+			}
+			new_node := Tree{name: entry, isDir: true}
+			current_node.children = append(current_node.children, &new_node)
+			current_node = &new_node
+		}
+
+		current_node.children = append(current_node.children, node)
+
+		PrintTree(tree)
+		return tree
+
+	} else if fileInfo.Mode().IsDir() {
+		auxillary_path := PathFromRepoRoot(path)
+		current_node := &Tree{}
+		tree := current_node
+
+		if auxillary_path == "." {
+			return GetAbsTreeFromPath(path)
+		}
+		elements := strings.Split(auxillary_path, "/")
+		
+		for _,entry := range elements {
+			if entry == ".git" || entry == ".gitpot" {
+				continue
+			}
+			new_node := Tree{name: entry, isDir: true}
+			current_node.children = append(current_node.children, &new_node)
+			current_node = &new_node
+		}
+
+		tree2 := GetAbsTreeFromPath(path)
+		current_node.children = append(current_node.children, tree2.children...)
+		return tree
+	} else {
+		panic("It's neither a file nor a directory")
+	}
+}
+
+// can be file can be path
+func GetAbsTreeFromPath(dirPath string) *Tree {
 
 	elements := strings.Split(dirPath, "/")
 	lastElement := elements[len(elements)-1]
@@ -31,29 +106,9 @@ func GetTreeFromDir(dirPath string) *Tree {
 			if entry.Name() == ".git" || entry.Name() == ".gitpot" {
 				continue
 			}
-			children = append(children, GetTreeFromDir(dirPath+"/"+entry.Name()))
+			children = append(children, GetAbsTreeFromPath(dirPath+"/"+entry.Name()))
 		} else {
-			// open file
-			file, err := os.Open(dirPath + "/" + entry.Name())
-			if err != nil {
-				panic(err)
-			}
-			defer file.Close()
-
-			// get the file size
-			stat, err := file.Stat()
-			if err != nil {
-				panic(err)
-			}
-
-			// read the file
-			fileSize := stat.Size()
-			bytes := make([]byte, fileSize)
-			_, err = file.Read(bytes)
-			if err != nil {
-				panic(err)
-			}
-
+			bytes := ReadFile(dirPath + "/" + entry.Name())
 			children = append(children, &Tree{name: entry.Name(), isDir: false, value: bytes})
 		}
 	}

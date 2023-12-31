@@ -2,6 +2,7 @@ package files
 
 import (
 	"os"
+	"path/filepath"
 )
 
 func GitPotDir(path string) string {
@@ -11,7 +12,7 @@ func GitPotDir(path string) string {
 	dirInfo, err := os.Stat(potentialGitPotDir)
 	if err == nil {
 		if dirInfo.IsDir() {
-			return potentialGitPotDir
+			return filepath.Clean(potentialGitPotDir)
 		} else {
 			panic("The given gitpot path is not a directory")
 		}
@@ -33,5 +34,5 @@ func GitPotPath(path string) string {
 }
 
 func WorkingCopyPath(path string) string {
-	return GitPotPath("") + "../" + path
+	return filepath.Clean(GitPotDir(path) + "/../" )
 }
