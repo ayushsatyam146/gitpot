@@ -36,7 +36,7 @@ func GetRelTreeFromWorkingDir(path string) *Tree{
 		abs_path,_ := filepath.Abs(path)
 		bytes := ReadFile(abs_path)
 		
-		node := &Tree{name: fileName, isDir: false, value: bytes}
+		node := &Tree{Name: fileName, IsDir: false, Value: bytes}
 
 		current_node := &Tree{}
 		tree := current_node
@@ -44,12 +44,12 @@ func GetRelTreeFromWorkingDir(path string) *Tree{
 			if entry == ".git" || entry == ".gitpot" {
 				continue
 			}
-			new_node := Tree{name: entry, isDir: true}
-			current_node.children = append(current_node.children, &new_node)
+			new_node := Tree{Name: entry, IsDir: true}
+			current_node.Children = append(current_node.Children, &new_node)
 			current_node = &new_node
 		}
 
-		current_node.children = append(current_node.children, node)
+		current_node.Children = append(current_node.Children, node)
 
 		PrintTree(tree)
 		return tree
@@ -68,13 +68,13 @@ func GetRelTreeFromWorkingDir(path string) *Tree{
 			if entry == ".git" || entry == ".gitpot" {
 				continue
 			}
-			new_node := Tree{name: entry, isDir: true}
-			current_node.children = append(current_node.children, &new_node)
+			new_node := Tree{Name: entry, IsDir: true}
+			current_node.Children = append(current_node.Children, &new_node)
 			current_node = &new_node
 		}
 
 		tree2 := GetAbsTreeFromPath(path)
-		current_node.children = append(current_node.children, tree2.children...)
+		current_node.Children = append(current_node.Children, tree2.Children...)
 		return tree
 	} else {
 		panic("It's neither a file nor a directory")
@@ -87,7 +87,7 @@ func GetAbsTreeFromPath(dirPath string) *Tree {
 	elements := strings.Split(dirPath, "/")
 	lastElement := elements[len(elements)-1]
 
-	tree := Tree{name: lastElement, isDir: true}
+	tree := Tree{Name: lastElement, IsDir: true}
 	children := []*Tree{}
 
 	dir, err := os.Open(dirPath)
@@ -109,9 +109,9 @@ func GetAbsTreeFromPath(dirPath string) *Tree {
 			children = append(children, GetAbsTreeFromPath(dirPath+"/"+entry.Name()))
 		} else {
 			bytes := ReadFile(dirPath + "/" + entry.Name())
-			children = append(children, &Tree{name: entry.Name(), isDir: false, value: bytes})
+			children = append(children, &Tree{Name: entry.Name(), IsDir: false, Value: bytes})
 		}
 	}
-	tree.children = children
+	tree.Children = children
 	return &tree
 }

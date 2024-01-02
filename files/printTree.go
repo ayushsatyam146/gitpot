@@ -9,7 +9,7 @@ func PrintTree(tree *Tree) {
 }
 
 func printTreeHandler(tree *Tree, level int) {
-	for i, child := range tree.children {
+	for i, child := range tree.Children {
 
 		temp := ""
 		for i := 0; i < level; i++ {
@@ -17,16 +17,16 @@ func printTreeHandler(tree *Tree, level int) {
 		}
 		fmt.Print(temp)
 
-		if i == len(tree.children)-1 {
+		if i == len(tree.Children)-1 {
 			fmt.Print("└───")
 		} else {
 			fmt.Print("├───")
 		}
-		if child.isDir {
-			fmt.Println(child.name)
+		if child.IsDir {
+			fmt.Println(child.Name)
 			printTreeHandler(child, level+1)
 		} else {
-			fmt.Println(child.name)
+			fmt.Println(child.Name)
 		}
 	}
 }

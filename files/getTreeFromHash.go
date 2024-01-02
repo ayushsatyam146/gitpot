@@ -23,7 +23,7 @@ func GetTreeFromHash(path string, hash string, treeName string) *Tree {
 		panic(err)
 	}
 
-	tree := Tree{name: treeName, isDir: true}
+	tree := Tree{Name: treeName, IsDir: true}
 	children := []*Tree{}
 
 	hashEntries := strings.Split(string(content), "\n")
@@ -57,9 +57,9 @@ func GetTreeFromHash(path string, hash string, treeName string) *Tree {
 				panic(err)
 			}
 
-			children = append(children, &Tree{name: name, isDir: false, value: content})
+			children = append(children, &Tree{Name: name, IsDir: false, Value: content})
 		}
 	}
-	tree.children = children
+	tree.Children = children
 	return &tree
 }

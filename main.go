@@ -1,12 +1,14 @@
 package main
 
-import "github.com/ayushsatyam146/gitpot/cmd"
+import (
+	"github.com/ayushsatyam146/gitpot/cmd"
+	// file "github.com/ayushsatyam146/gitpot/files"
+)
 
-// "github.com/ayushsatyam146/gitpot/cmd"
 
 func main() {
 	cmd.Execute()
-	// file.GetTreeFromPath("test/something/again")
+	// tree := file.GetAbsTreeFromPath("test/")
 	// hash := file.WriteTreeToGitpot(tree, "test/.gitpot")
 	// fmt.Println(hash)
 	// tree2 := file.GetTreeFromHash("test/.gitpot", hash, "")
