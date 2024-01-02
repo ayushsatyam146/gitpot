@@ -1,18 +1,24 @@
 package main
 
 import (
-	"github.com/ayushsatyam146/gitpot/cmd"
-	// file "github.com/ayushsatyam146/gitpot/files"
+
+	// "github.com/ayushsatyam146/gitpot/cmd"
+	file "github.com/ayushsatyam146/gitpot/files"
+	"github.com/ayushsatyam146/gitpot/index"
 )
 
 
 func main() {
-	cmd.Execute()
-	// tree := file.GetAbsTreeFromPath("test/")
+	// cmd.Execute()
+	var args []string
+	args = append(args, "test")
+	tree := index.BuildTree(args)
+	// tree.Name = "test"
 	// hash := file.WriteTreeToGitpot(tree, "test/.gitpot")
+	file.PrintTree(tree)
 	// fmt.Println(hash)
 	// tree2 := file.GetTreeFromHash("test/.gitpot", hash, "")
-	// file.PrintTree(tree2)
+	// // file.PrintTree(tree2)
 	// file.WriteTreeToWorkingDir(tree2, "test-write")
 	
 	// res, _ := files.ListFilesRecursive(".")

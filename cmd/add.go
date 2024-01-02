@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	file "github.com/ayushsatyam146/gitpot/files"
+	// file "github.com/ayushsatyam146/gitpot/files"
+	"github.com/ayushsatyam146/gitpot/index"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +12,8 @@ func init() {
 
 func addHandler(args []string) {
 	// file.PrintTree(file.GetRelTreeFromWorkingDir(args[0]))
-	file.GetRelTreeFromWorkingDir(args[0])
+	// file.GetRelTreeFromWorkingDir(args[0])
+	index.BuildTree(args)
 }
 
 var addCMD = &cobra.Command{

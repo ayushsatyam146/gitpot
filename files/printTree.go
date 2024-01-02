@@ -5,6 +5,7 @@ import (
 )
 
 func PrintTree(tree *Tree) {
+	fmt.Println(tree.Name)
 	printTreeHandler(tree, 0)
 }
 
@@ -23,9 +24,11 @@ func printTreeHandler(tree *Tree, level int) {
 			fmt.Print("├───")
 		}
 		if child.IsDir {
+			// fmt.Println(child.Name, child.IsDir)
 			fmt.Println(child.Name)
 			printTreeHandler(child, level+1)
 		} else {
+			// fmt.Println(child.Name, child.IsDir)
 			fmt.Println(child.Name)
 		}
 	}
