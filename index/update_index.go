@@ -9,6 +9,8 @@ import (
 )
 
 func BuildTree(paths []string) *file.Tree {
+
+	// get this root after parsing any index file if it exists, if not then create a new one
 	root := &file.Tree{Name: "root", IsDir: true}
 
 	for _, path := range paths {
@@ -28,12 +30,23 @@ func BuildTree(paths []string) *file.Tree {
 			filePath := file.PathFromRepoRoot(auxillary_path)
 			content := file.ReadFile(absolute_path)	
 			node := &file.Tree{Name: fileName, IsDir: false, Value: content}
-			addPathToTree(root, strings.Split(filePath, "/")[:], node, false)
+			if(filePath == ".") {
+				addPathToTree(root, []string{}, node, false)
+			} else {
+				addPathToTree(root, strings.Split(filePath, "/")[:], node, false)
+			}
 		} else if fileInfo.Mode().IsDir() {
 			
 			dirPath := file.PathFromRepoRoot(path)
+			if(dirPath == ".") {
+				dirPath = ""
+			}
 			tree := file.GetAbsTreeFromPath(path)
-			addPathToTree(root, strings.Split(dirPath, "/")[:], tree, true)
+			if(dirPath == "." || dirPath == "") {
+				addPathToTree(root, []string{}, tree, true)
+			} else {
+				addPathToTree(root, strings.Split(dirPath, "/")[:], tree, true)
+			}
 		} else {
 			panic("It's neither a file nor a directory")
 		}

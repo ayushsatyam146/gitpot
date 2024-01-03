@@ -4,11 +4,11 @@ import (
 	"os"
 )
 
-func WriteToObjectsDir(path string, content []byte, isDir bool) {
+func WriteToObjectsDir(path string, content []byte, notFile bool) string {
 	objectDirFileName, _ := GetSHA1(content)
 
 	objectDirContent := ""
-	if isDir {
+	if notFile {
 		objectDirContent += string(content)
 	} else {
 		objectDirContent += "blob\n" + string(content)
@@ -21,4 +21,6 @@ func WriteToObjectsDir(path string, content []byte, isDir bool) {
 	}
 	defer file.Close()
 	file.WriteString(objectDirContent)
+
+	return objectDirFileName
 }
