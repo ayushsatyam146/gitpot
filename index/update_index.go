@@ -18,31 +18,31 @@ func BuildTree(paths []string) *file.Tree {
 		if err != nil {
 			if os.IsNotExist(err) {
 				panic("File or directory does not exist")
-			} 
+			}
 		}
 
-		if fileInfo.Mode().IsRegular(){
-			absolute_path,_ := filepath.Abs(path)
+		if fileInfo.Mode().IsRegular() {
+			absolute_path, _ := filepath.Abs(path)
 			elements := strings.Split(path, "/")
 			fileName := elements[len(elements)-1]
 			elements = elements[:len(elements)-1]
 			auxillary_path := strings.Join(elements, "/")
 			filePath := file.PathFromRepoRoot(auxillary_path)
-			content := file.ReadFile(absolute_path)	
+			content := file.ReadFile(absolute_path)
 			node := &file.Tree{Name: fileName, IsDir: false, Value: content}
-			if(filePath == ".") {
+			if filePath == "." {
 				addPathToTree(root, []string{}, node, false)
 			} else {
 				addPathToTree(root, strings.Split(filePath, "/")[:], node, false)
 			}
 		} else if fileInfo.Mode().IsDir() {
-			
+
 			dirPath := file.PathFromRepoRoot(path)
-			if(dirPath == ".") {
+			if dirPath == "." {
 				dirPath = ""
 			}
 			tree := file.GetAbsTreeFromPath(path)
-			if(dirPath == "." || dirPath == "") {
+			if dirPath == "." || dirPath == "" {
 				addPathToTree(root, []string{}, tree, true)
 			} else {
 				addPathToTree(root, strings.Split(dirPath, "/")[:], tree, true)
@@ -67,7 +67,7 @@ func addPathToTree(root *file.Tree, path []string, subtree *file.Tree, isDir boo
 		}
 		if child == nil {
 			child = &file.Tree{Name: segment, IsDir: true}
-			current.Children = append(current.Children, child )
+			current.Children = append(current.Children, child)
 		}
 		current = child
 	}

@@ -5,8 +5,7 @@ import (
 	"path/filepath"
 )
 
-// ReadFileToString reads the contents of the file at the specified path and returns it as a string
-func ReadFile(filePath string) ([]byte) {
+func ReadFile(filePath string) []byte {
 	file, err := os.Open(filePath)
 	if err != nil {
 		panic(err)

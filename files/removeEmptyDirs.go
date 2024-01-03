@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 )
 
-// isDirEmpty checks if a directory is empty.
 func isDirEmpty(path string) (bool, error) {
 	dir, err := os.Open(path)
 	if err != nil {

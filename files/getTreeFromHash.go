@@ -17,7 +17,6 @@ func GetTreeFromHash(path string, hash string, treeName string) *Tree {
 	}
 	defer file.Close()
 
-	// content from the tree hash file
 	content, err := io.ReadAll(file)
 	if err != nil {
 		panic(err)

@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	file "github.com/ayushsatyam146/gitpot/files"
 	"github.com/ayushsatyam146/gitpot/index"
 	"github.com/spf13/cobra"
@@ -14,8 +12,7 @@ func init() {
 
 func addHandler(args []string) {
 	tree := index.BuildTree(args)
-	hash,indexFileContent := file.WriteTreeToGitpot(tree, "test/.gitpot")
-	fmt.Println(hash)
+	_, indexFileContent := file.WriteTreeToGitpot(tree, "test/.gitpot")
 	index.WriteContentToIndex("test/.gitpot", indexFileContent)
 }
 

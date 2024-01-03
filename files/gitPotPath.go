@@ -7,7 +7,6 @@ import (
 
 func GitPotDir(path string) string {
 	potentialGitPotDir := path + "/.gitpot"
-	// check if path exists and is a directory
 
 	dirInfo, err := os.Stat(potentialGitPotDir)
 	if err == nil {
@@ -24,7 +23,6 @@ func GitPotDir(path string) string {
 	panic("err")
 }
 
-// give "" in path to get the gitpot directory
 func GitPotPath(path string) string {
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -34,5 +32,5 @@ func GitPotPath(path string) string {
 }
 
 func WorkingCopyPath(path string) string {
-	return filepath.Clean(GitPotDir(path) + "/../" )
+	return filepath.Clean(GitPotDir(path) + "/../")
 }

@@ -26,18 +26,14 @@ func PathFromRepoRoot(path string) string {
 	abs1, _ := filepath.Abs(WorkingCopyPath(path))
 	abs2, _ := filepath.Abs(path)
 	rel, _ := filepath.Rel(abs1, abs2)
-	// fmt.Println(abs1, abs2, rel)
-	// fmt.Println(WorkingCopyPath(path))
 	return rel
 }
 
-
-func WriteTreeToWorkingDir(tree *Tree, path string)  {
+func WriteTreeToWorkingDir(tree *Tree, path string) {
 	os.MkdirAll(path, 0755)
 
 	for _, child := range tree.Children {
 		if !child.IsDir {
-			// extract the values from the child and write to disk
 			file, err := os.Create(path + "/" + child.Name)
 			if err != nil {
 				panic(err)
@@ -45,7 +41,7 @@ func WriteTreeToWorkingDir(tree *Tree, path string)  {
 			defer file.Close()
 			file.Write(child.Value)
 		} else {
-			WriteTreeToWorkingDir(child, path + "/" + child.Name)
+			WriteTreeToWorkingDir(child, path+"/"+child.Name)
 		}
 	}
 }
@@ -58,10 +54,9 @@ func WriteTreeToGitpot(tree *Tree, path string) (string, []byte) {
 			hash, _ := utils.GetSHA1(child.Value)
 			TreeFileContent += "blob " + hash + " " + child.Name + "\n"
 		} else {
-			hash,_ := WriteTreeToGitpot(child, path)
+			hash, _ := WriteTreeToGitpot(child, path)
 			elements := strings.Split(child.Name, "/")
 			lastElement := elements[len(elements)-1]
-			// fmt.Println(lastElement)
 			TreeFileContent += "tree " + hash + " " + lastElement + "\n"
 		}
 	}

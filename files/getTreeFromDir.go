@@ -7,25 +7,17 @@ import (
 	"strings"
 )
 
-// make it get tree from file or dir path
-// Give dir path and get tree of the directory
-// make it construct tree of nested tree structures as well like docs/something/else/a.txt
-// make it smart enough to construct unified tree if we have docs/something/else/a.txt and docs/something/else/b.txt
+func GetRelTreeFromWorkingDir(path string) *Tree {
 
-func GetRelTreeFromWorkingDir(path string) *Tree{
-
-	fmt.Println(filepath.Abs(path))
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		if os.IsNotExist(err) {
 			panic("File or directory does not exist")
-		} 
+		}
 	}
 
-	// Check if it's a file
 	if fileInfo.Mode().IsRegular() {
 		// if a file
-		
 		elements := strings.Split(path, "/")
 		fileName := elements[len(elements)-1]
 		elements = elements[:len(elements)-1]
@@ -33,14 +25,14 @@ func GetRelTreeFromWorkingDir(path string) *Tree{
 		auxillary_path = PathFromRepoRoot(auxillary_path)
 		elements = strings.Split(auxillary_path, "/")
 
-		abs_path,_ := filepath.Abs(path)
+		abs_path, _ := filepath.Abs(path)
 		bytes := ReadFile(abs_path)
-		
+
 		node := &Tree{Name: fileName, IsDir: false, Value: bytes}
 
 		current_node := &Tree{}
 		tree := current_node
-		for _,entry := range elements {
+		for _, entry := range elements {
 			if entry == ".git" || entry == ".gitpot" {
 				continue
 			}
@@ -51,7 +43,6 @@ func GetRelTreeFromWorkingDir(path string) *Tree{
 
 		current_node.Children = append(current_node.Children, node)
 
-		PrintTree(tree)
 		return tree
 
 	} else if fileInfo.Mode().IsDir() {
@@ -63,8 +54,8 @@ func GetRelTreeFromWorkingDir(path string) *Tree{
 			return GetAbsTreeFromPath(path)
 		}
 		elements := strings.Split(auxillary_path, "/")
-		
-		for _,entry := range elements {
+
+		for _, entry := range elements {
 			if entry == ".git" || entry == ".gitpot" {
 				continue
 			}
@@ -81,7 +72,6 @@ func GetRelTreeFromWorkingDir(path string) *Tree{
 	}
 }
 
-// can be file can be path
 func GetAbsTreeFromPath(dirPath string) *Tree {
 
 	elements := strings.Split(dirPath, "/")
