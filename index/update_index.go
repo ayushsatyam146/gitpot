@@ -10,7 +10,20 @@ import (
 
 func BuildTree(paths []string) *file.Tree {
 
+	// ------------------will make git add more robust------------------
 	// get this root after parsing any index file if it exists, if not then create a new one
+	// read index file and compute the hash and then use GetTreeFromHash to get the tree
+	// for comparing any new path or file that is added via `add` command this same tree will be used for comparison
+
+	// ------------------will tell about tracked/untracked files------------------
+	// we can also check where exactly is this generated tree different 
+	// from the tree that we get from GetTreeFromDir by passing working dir in this function
+
+	// to know about staged and unstaged change we can just get the tree 'root' in a similar manner (mentioned above to above)
+  // from the current index file. After that in that tree we can just compute the hashes of each file from the working dir mentioned in the 'root' tree
+	// if hash is same we can say it doesn't have any changes if it's not same we can say we have unstaged changes
+	// after that upon `gitpot add` we can just update index from the current working dir and get the index updated to latest possible version
+
 	root := &file.Tree{Name: "root", IsDir: true}
 
 	for _, path := range paths {
