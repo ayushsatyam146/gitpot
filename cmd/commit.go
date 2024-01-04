@@ -34,8 +34,8 @@ func commitHandler() {
 
 var commitCMD = &cobra.Command{
 	Use:   "commit",
-	Short: "initializes a gitpot repository",
-	Long:  "initializes a gitpot repository",
+	Short: "takes the latest updates to the index or staging area and commits them to the repository",
+	Long:  "takes the latest updates to the index or staging area and commits them to the repository",
 	Run: func(cmd *cobra.Command, args []string) {
 		commitHandler()
 	},

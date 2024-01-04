@@ -18,8 +18,8 @@ func addHandler(args []string) {
 
 var addCMD = &cobra.Command{
 	Use:   "add",
-	Short: "initializes a gitpot repository",
-	Long:  "initializes a gitpot repository",
+	Short: "adds the listed files or directories to the staging area",
+	Long:  "adds the listed files or directories to the staging area",
 	Run: func(cmd *cobra.Command, args []string) {
 		addHandler(args)
 	},
