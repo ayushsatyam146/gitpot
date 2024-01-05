@@ -27,3 +27,13 @@ var statusCMD = &cobra.Command{
 		statusHandler(args)
 	},
 }
+
+// if curr_index == working_dir {
+// 	if prev_index != curr_index {
+// 		// make it green because file has been modified
+//  } else {
+// 		// make it white because file has not been modified since last commit
+//  }
+// } else {
+// 	 // make it red because file has some unstaged changes
+// }
