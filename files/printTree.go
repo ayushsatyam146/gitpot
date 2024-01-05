@@ -25,11 +25,11 @@ func printTreeHandler(tree *Tree, level int) {
 		}
 		if child.IsDir {
 			// fmt.Println(child.Name, child.IsDir)
-			fmt.Println(child.Name)
+			fmt.Println(child.Name,",", child.Tracked)
 			printTreeHandler(child, level+1)
 		} else {
 			// fmt.Println(child.Name, child.IsDir)
-			fmt.Println(child.Name)
+			fmt.Println(child.Name,",", child.Tracked)
 		}
 	}
 }

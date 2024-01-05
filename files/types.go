@@ -5,5 +5,5 @@ type Tree struct {
 	IsDir    bool
 	Children []*Tree
 	Value    []byte
-	// Tracked bool (may become handy in `gitpot status`)
+	Tracked bool // (may become handy in `gitpot status`)
 }
