@@ -1,4 +1,4 @@
-package files
+package status
 
 import (
 	"fmt"
@@ -24,10 +24,10 @@ func printTreeHandler(tree *Tree, level int) {
 			fmt.Print("├───")
 		}
 		if child.IsDir {
-			fmt.Println(child.Name)
+			fmt.Println(child.Name,child.Modified,child.Staged)
 			printTreeHandler(child, level+1)
 		} else {
-			fmt.Println(child.Name)
+			fmt.Println(child.Name,child.Modified,child.Staged)
 		}
 	}
 }

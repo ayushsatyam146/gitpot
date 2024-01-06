@@ -25,6 +25,10 @@ func BuildTree(paths []string) *file.Tree {
 	// after that upon `gitpot add` we can just update index from the current working dir and get the index updated to latest possible version
 
 	root := &file.Tree{Name: "root", IsDir: true}
+	// indexContent := string(file.ReadFile("test/.gitpot/index"))
+	// if indexContent != "" {
+	// 	root = GetTreeFromIndex()
+	// }
 
 	for _, path := range paths {
 		fileInfo, err := os.Stat(path)
@@ -87,6 +91,12 @@ func addPathToTree(root *file.Tree, path []string, subtree *file.Tree, isDir boo
 	if isDir {
 		current.Children = append(current.Children, subtree.Children...)
 	} else {
+		for i, child := range current.Children {
+			if child.Name == subtree.Name {
+				current.Children[i] = subtree
+				break
+			}
+		}
 		current.Children = append(current.Children, subtree)
 	}
 }

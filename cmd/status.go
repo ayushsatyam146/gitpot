@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	file "github.com/ayushsatyam146/gitpot/files"
-	"github.com/ayushsatyam146/gitpot/index"
 	"github.com/ayushsatyam146/gitpot/status"
 
 	"github.com/spf13/cobra"
@@ -13,10 +11,8 @@ func init() {
 }
 
 func statusHandler(args []string) {
-	workingTree := file.GetRelTreeFromWorkingDir("test")
-	indexTree := index.GetTreeFromIndex()
-	status.UpdateTrackStatusOfWorkingTree(workingTree, indexTree)
-	status.PrintTrackStatus(workingTree)
+	status.PrintUntrackedFiles()
+	status.PrintModifiedFiles()
 }
 
 var statusCMD = &cobra.Command{
@@ -28,12 +24,3 @@ var statusCMD = &cobra.Command{
 	},
 }
 
-// if curr_index == working_dir {
-// 	if prev_index != curr_index {
-// 		// make it green because file has been modified
-//  } else {
-// 		// make it white because file has not been modified since last commit
-//  }
-// } else {
-// 	 // make it red because file has some unstaged changes
-// }

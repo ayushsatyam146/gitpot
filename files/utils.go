@@ -46,7 +46,7 @@ func WriteTreeToWorkingDir(tree *Tree, path string) {
 	}
 }
 
-func WriteTreeToGitpot(tree *Tree, path string) (string, []byte) {
+func WriteTreeToIndex(tree *Tree, path string) (string, []byte) {
 	TreeFileContent := "tree\n"
 	for _, child := range tree.Children {
 		if !child.IsDir {
@@ -54,7 +54,7 @@ func WriteTreeToGitpot(tree *Tree, path string) (string, []byte) {
 			hash, _ := utils.GetSHA1(child.Value)
 			TreeFileContent += "blob " + hash + " " + child.Name + "\n"
 		} else {
-			hash, _ := WriteTreeToGitpot(child, path)
+			hash, _ := WriteTreeToIndex(child, path)
 			elements := strings.Split(child.Name, "/")
 			lastElement := elements[len(elements)-1]
 			TreeFileContent += "tree " + hash + " " + lastElement + "\n"

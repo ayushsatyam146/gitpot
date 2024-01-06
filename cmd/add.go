@@ -12,7 +12,7 @@ func init() {
 
 func addHandler(args []string) {
 	tree := index.BuildTree(args)
-	_, indexFileContent := file.WriteTreeToGitpot(tree, "test/.gitpot")
+	_, indexFileContent := file.WriteTreeToIndex(tree, "test/.gitpot")
 	index.WriteContentToIndex("test/.gitpot", indexFileContent)
 }
 
