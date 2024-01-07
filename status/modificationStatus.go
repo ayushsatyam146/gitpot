@@ -18,31 +18,50 @@ func UpdateModifiedStatusOfWorkingTree(workingTree *Tree, curr_index *Tree, prev
 	for _, child := range curr_index.Children {
 		curr_indexMap[child.Name] = child
 	}
-	for _, child := range prev_index.Children {
-		prev_indexMap[child.Name] = child
+	last_commit_hash := string(file.ReadFile("test/.gitpot/refs/heads/master"))
+	if(last_commit_hash != "") {
+		for _, child := range prev_index.Children {
+			prev_indexMap[child.Name] = child
+		}
 	}
 	for key, value := range curr_indexMap {
 		if workingTreeMap[key] == nil {
 			value.Modified = true
 			// throw an exception that file has been deleted from working dir and 'git add' needs to run again
 		} else {
-			if !value.IsDir {
-				currIndexHash,_ := utils.GetSHA1(value.Value)
-				prevIndexHash,_ := utils.GetSHA1(prev_indexMap[key].Value)
-				workingTreeHash,_ := utils.GetSHA1(workingTreeMap[key].Value)
-				if currIndexHash == workingTreeHash {
-					if prevIndexHash != currIndexHash {
+			if(len(prev_indexMap) == 0) {
+				if !value.IsDir {
+					currIndexHash,_ := utils.GetSHA1(value.Value)
+					workingTreeHash,_ := utils.GetSHA1(workingTreeMap[key].Value)
+					if currIndexHash == workingTreeHash {
 						value.Modified = true
 						value.Staged = true
 					} else {
-						value.Modified = false
+						value.Modified = true
+						value.Staged = false
 					}
 				} else {
-					value.Modified = true
-					value.Staged = false
-				}
+					UpdateModifiedStatusOfWorkingTree(workingTreeMap[key], curr_indexMap[key], prev_indexMap[key])
+				}							
 			} else {
-				UpdateModifiedStatusOfWorkingTree(workingTreeMap[key], curr_indexMap[key], prev_indexMap[key])
+				if !value.IsDir {
+					currIndexHash,_ := utils.GetSHA1(value.Value)
+					prevIndexHash,_ := utils.GetSHA1(prev_indexMap[key].Value)
+					workingTreeHash,_ := utils.GetSHA1(workingTreeMap[key].Value)
+					if currIndexHash == workingTreeHash {
+						if prevIndexHash != currIndexHash {
+							value.Modified = true
+							value.Staged = true
+						} else {
+							value.Modified = false
+						}
+					} else {
+						value.Modified = true
+						value.Staged = false
+					}
+				} else {
+					UpdateModifiedStatusOfWorkingTree(workingTreeMap[key], curr_indexMap[key], prev_indexMap[key])
+				}
 			}
 		}
 	}

@@ -1,11 +1,9 @@
 package cmd
 
 import (
-	"os"
-
+	"github.com/ayushsatyam146/gitpot/branch"
 	file "github.com/ayushsatyam146/gitpot/files"
 	"github.com/ayushsatyam146/gitpot/utils"
-	"github.com/ayushsatyam146/gitpot/branch"
 	"github.com/spf13/cobra"
 )
 
@@ -29,12 +27,12 @@ func commitHandler() {
 		message + "\n"
 	utils.WriteToObjectsDir("test/.gitpot", []byte(commitString), true)
 	commitHash,_ := utils.GetSHA1([]byte(commitString))
-	file, err := os.Create("test/.gitpot/HEAD")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	file.WriteString(commitHash)
+	// file, err := os.Create("test/.gitpot/HEAD")
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// defer file.Close()
+	// file.WriteString(commitHash)
 	utils.UpdateCommitHashInBranch(commitHash)
 }
 
