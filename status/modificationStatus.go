@@ -103,7 +103,6 @@ func GetStagedChanges(tree *Tree, prefix string, result *[]string) {
 }
 
 func PrintModifiedFiles() {
-	fmt.Println("Modified files:")	
 	workingTree := convertTrees(file.GetRelTreeFromWorkingDir("test"))
 	curr_indexTree := convertTrees(index.GetTreeFromIndex())
 	prev_indexTree := convertTrees(index.GetTreeFromPrevCommit())
@@ -112,6 +111,9 @@ func PrintModifiedFiles() {
 	GetUnstagedChanges(curr_indexTree,"\t", &UnstagedChanges)
 	StagedChanges := []string{}
 	GetStagedChanges(curr_indexTree,"\t", &StagedChanges)
+	if len(UnstagedChanges) != 0  || len(StagedChanges) != 0 {
+		fmt.Println("Modified files:")	
+	}
 	if len(UnstagedChanges) != 0 {
 		red := "\033[91m"     
 		reset := "\033[0m"

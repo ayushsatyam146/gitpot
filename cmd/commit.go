@@ -5,6 +5,7 @@ import (
 
 	file "github.com/ayushsatyam146/gitpot/files"
 	"github.com/ayushsatyam146/gitpot/utils"
+	"github.com/ayushsatyam146/gitpot/branch"
 	"github.com/spf13/cobra"
 )
 
@@ -19,12 +20,11 @@ func commitHandler() {
 	author := "Ayush Satyam"
 	committer := "Ayush Satyam"
 	message := "Initial Commit"
-	// read parent from HEAD eventually
-	parent := ""
+	parentCommit := branch.GetLatestCommit()
 	commitString := "commit\n" +
 		"tree " + treeHash + "\n" +
 		"author " + author + "\n" +
-		"parent" + parent + "\n" +
+		"parent " + parentCommit + "\n" +
 		"committer " + committer + "\n\n" +
 		message + "\n"
 	utils.WriteToObjectsDir("test/.gitpot", []byte(commitString), true)
@@ -35,10 +35,7 @@ func commitHandler() {
 	}
 	defer file.Close()
 	file.WriteString(commitHash)
-	// update HEAD and refs/heads/branch_name along with this
-	// so that relevant branch has it's latest commit hash
-	// and HEAD will also point to that relevant branch's latest commit hash
-	// indicating active branch
+	utils.UpdateCommitHashInBranch(commitHash)
 }
 
 var commitCMD = &cobra.Command{

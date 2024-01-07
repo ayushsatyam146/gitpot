@@ -19,22 +19,11 @@ func gitpotInitHandler() {
 	} else {
 		fmt.Println("Initialized empty Gitpot repository in test/.gitpot")
 	}
-	headStatus := utils.CreateFile("test/.gitpot/HEAD")
-	if headStatus == "File already exists" {
-		return
-	}
-	config := utils.CreateFile("test/.gitpot/config")
-	if config == "File already exists" {
-		return
-	}
-	indexStatus := utils.CreateFile("test/.gitpot/index")
-	if indexStatus == "File already exists" {
-		return
-	}
-	objectsStatus := utils.CreateDir("test/.gitpot/objects")
-	if objectsStatus == "Directory already exists" {
-		return
-	}
+	utils.CreateFile("test/.gitpot/HEAD", []byte("refs/heads/master"))	
+	utils.CreateFile("test/.gitpot/config", []byte("[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n\tlogallrefupdates = true\n"))
+	utils.CreateFile("test/.gitpot/index", []byte(""))
+	utils.CreateDir("test/.gitpot/objects")
+	utils.CreateFile("test/.gitpot/refs/heads/master", []byte(""))
 }
 
 var intiCMD = &cobra.Command{
