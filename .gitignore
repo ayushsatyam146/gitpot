@@ -4,3 +4,4 @@ test/
 test-write/
 .gitpot/
 go.work
+/cmd/test.go

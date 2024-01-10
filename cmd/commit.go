@@ -1,38 +1,36 @@
 package cmd
 
 import (
+	"time"
+
 	"github.com/ayushsatyam146/gitpot/branch"
 	file "github.com/ayushsatyam146/gitpot/files"
 	"github.com/ayushsatyam146/gitpot/utils"
 	"github.com/spf13/cobra"
 )
 
+var commitMessage string
+
 func init() {
 	rootCmd.AddCommand(commitCMD)
+	commitCMD.Flags().StringVar(&commitMessage, "m", "", "write a commit message")
 }
 
 func commitHandler() {
 	content := file.ReadFile("test/.gitpot/index")
 	contentString := "tree\n" + string(content)
 	treeHash, _ := utils.GetSHA1([]byte(contentString))
-	author := "Ayush Satyam"
-	committer := "Ayush Satyam"
-	message := "Initial Commit"
+	committer := utils.ReadFromConfig("user.name") + " <" + utils.ReadFromConfig("user.email") + ">"
 	parentCommit := branch.GetLatestCommit()
+	Date := time.Now().Format("Mon Jan 2 15:04:05 2006 -0700")
 	commitString := "commit\n" +
 		"tree " + treeHash + "\n" +
-		"author " + author + "\n" +
 		"parent " + parentCommit + "\n" +
+		"date " + Date + "\n" +
 		"committer " + committer + "\n\n" +
-		message + "\n"
+		commitMessage + "\n"
 	utils.WriteToObjectsDir("test/.gitpot", []byte(commitString), true)
 	commitHash,_ := utils.GetSHA1([]byte(commitString))
-	// file, err := os.Create("test/.gitpot/HEAD")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer file.Close()
-	// file.WriteString(commitHash)
 	utils.UpdateCommitHashInBranch(commitHash)
 }
 
