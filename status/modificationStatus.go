@@ -46,7 +46,10 @@ func UpdateModifiedStatusOfWorkingTree(workingTree *Tree, curr_index *Tree, prev
 			} else {
 				if !value.IsDir {
 					currIndexHash,_ := utils.GetSHA1(value.Value)
-					prevIndexHash,_ := utils.GetSHA1(prev_indexMap[key].Value)
+					prevIndexHash := ""
+					if prev_indexMap[key] != nil {
+						prevIndexHash,_ = utils.GetSHA1(prev_indexMap[key].Value)
+					}
 					workingTreeHash,_ := utils.GetSHA1(workingTreeMap[key].Value)
 					if currIndexHash == workingTreeHash {
 						if prevIndexHash != currIndexHash {
