@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/ayushsatyam146/gitpot/branch"
 	"github.com/spf13/cobra"
 )
 
@@ -10,16 +11,14 @@ func init() {
 
 func branchHandler(args []string) {
 	if len(args) == 0 {
-		// PrintBrancheNames()
+		branch.PrintBrancheNames()
 	} else {
-		// CreateBranch(args[0])
+		branch.CreateBranch(args[0])
 	}
-	// no args then list all branches
-	// if args then create a new branch
 }
 
 var branchCMD = &cobra.Command{
-	Use:   "add",
+	Use:   "branch",
 	Short: "adds the listed files or directories to the staging area",
 	Long:  "adds the listed files or directories to the staging area",
 	Run: func(cmd *cobra.Command, args []string) {

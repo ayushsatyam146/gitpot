@@ -1,6 +1,7 @@
 package files
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -27,6 +28,32 @@ func PathFromRepoRoot(path string) string {
 	abs2, _ := filepath.Abs(path)
 	rel, _ := filepath.Rel(abs1, abs2)
 	return rel
+}
+
+func ClearWorkingDir() {
+	dirPath := "test/"
+
+	dir, err := os.Open(dirPath)
+	if err != nil {
+		fmt.Println("Error opening directory:", err)
+	}
+	defer dir.Close()
+
+	entries, err := dir.ReadDir(-1)
+	if err != nil {
+		fmt.Println("Error reading directory:", err)
+	}
+
+	for _, entry := range entries {
+		if entry.IsDir() {
+			if entry.Name() == ".git" || entry.Name() == ".gitpot" {
+				continue
+			}
+			os.RemoveAll(dirPath + "/" + entry.Name())
+		} else {
+			os.Remove(dirPath + "/" + entry.Name())
+		}
+	}
 }
 
 func WriteTreeToWorkingDir(tree *Tree, path string) {
