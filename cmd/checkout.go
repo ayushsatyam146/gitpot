@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/ayushsatyam146/gitpot/branch"
 	"github.com/ayushsatyam146/gitpot/files"
 	"github.com/spf13/cobra"
 )
@@ -36,6 +37,8 @@ func checkoutHandler(args []string) {
 				break
 			}
 		}
+		
+		branch.UpdateIndexWithTree(treeHash)
 		tree := files.GetTreeFromHash("test/.gitpot",treeHash,"root")
 		files.ClearWorkingDir()
 		files.WriteTreeToWorkingDir(tree,"test")
