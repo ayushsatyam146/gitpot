@@ -20,14 +20,7 @@ func checkoutHandler(args []string) {
 	if _, err := os.Stat(branchFile); os.IsNotExist(err) {
 		fmt.Println("Branch doesn't exist")
 	} else {
-		file, err := os.Open("test/.gitpot/HEAD")
-		if err != nil {
-			fmt.Println("Error opening file:", err)
-			return
-		}
-		defer file.Close()
-		file.WriteString("refs/heads" + branchName)
-
+		branch.SwitchHead(branchName)
 		commitHash := string(files.ReadFile("test/.gitpot/refs/heads/" + branchName))
 		commitContent := string(files.ReadFile("test/.gitpot/objects/" + commitHash[:2] + "/" + commitHash[2:]))
 		treeHash := ""
